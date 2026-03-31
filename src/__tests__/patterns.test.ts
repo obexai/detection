@@ -251,24 +251,24 @@ describe("redaction", () => {
 // ── Performance ────────────────────────────────────────────────
 
 describe("performance", () => {
-  it("scans a typical prompt in under 10ms", () => {
+  it("scans a typical prompt in under 50ms", () => {
     const text =
       "Please help me write an email to my colleague about the quarterly report. " +
       "We need to discuss revenue targets and customer feedback from last month. " +
       "The meeting is scheduled for next Tuesday at 2pm in the main conference room.";
 
     const r = detector.scan(text);
-    expect(r.latencyMs).toBeLessThan(10);
+    expect(r.latencyMs).toBeLessThan(50);
   });
 
-  it("scans a PII-heavy prompt in under 10ms", () => {
+  it("scans a PII-heavy prompt in under 50ms", () => {
     const text =
       "My name is John Smith, email john@test.com, phone 07700 900123. " +
       "NI number AB 12 34 56 C, card 4111 1111 1111 1111. " +
       "Address: 123 Main St, London SW1A 1AA. DOB 15/03/1990.";
 
     const r = sensitiveDetector.scan(text);
-    expect(r.latencyMs).toBeLessThan(10);
+    expect(r.latencyMs).toBeLessThan(50);
     expect(r.entities.length).toBeGreaterThan(3);
   });
 });

@@ -1,5 +1,6 @@
 import { getPatterns } from "./patterns/registry.js";
 import { redact } from "./redaction.js";
+import { detectWithNer } from "./ner.js";
 import type { DetectionResult, DetectorConfig, PiiEntity, Sensitivity } from "./types.js";
 
 // Auto-register all built-in patterns on import
@@ -8,6 +9,7 @@ import "./patterns/index.js";
 export type { DetectionResult, DetectorConfig, PiiEntity, PiiEntityType, Sensitivity, PiiPattern } from "./types.js";
 export { registerPatterns, getPatterns } from "./patterns/registry.js";
 export { redact } from "./redaction.js";
+export { NER_ENTITY_TYPES } from "./ner.js";
 
 /** Minimum confidence thresholds per sensitivity level */
 const SENSITIVITY_THRESHOLDS: Record<Sensitivity, number> = {
@@ -68,6 +70,15 @@ export class PiiDetector {
         // Prevent infinite loops on zero-length matches
         if (match[0].length === 0) regex.lastIndex++;
       }
+    }
+
+    // PASS 2: NER detection (person names, organizations, locations)
+    const nerEntities = detectWithNer(text);
+    for (const entity of nerEntities) {
+      if (this.config.exclude.includes(entity.type)) continue;
+      if (this.config.entities.length > 0 && !this.config.entities.includes(entity.type)) continue;
+      if (entity.confidence < threshold) continue;
+      entities.push(entity);
     }
 
     // Deduplicate overlapping entities — keep highest confidence

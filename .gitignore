@@ -2,3 +2,7 @@ node_modules
 dist
 .turbo
 *.tsbuildinfo
+.env
+.env.*
+.npmrc
+.DS_Store
