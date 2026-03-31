@@ -1,5 +1,5 @@
 {
-  "name": "@obex/detection",
+  "name": "@obexai/detection",
   "version": "0.1.0",
   "description": "PII detection engine — regex patterns and NER for structured and unstructured PII",
   "type": "module",

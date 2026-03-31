@@ -1,17 +1,17 @@
-# @obex/detection
+# @obexai/detection
 
 PII detection engine for JavaScript/TypeScript. 26 regex patterns with validators, configurable sensitivity, and sub-5ms latency.
 
 ## Install
 
 ```bash
-npm install @obex/detection
+npm install @obexai/detection
 ```
 
 ## Quick Start
 
 ```ts
-import { PiiDetector } from "@obex/detection";
+import { PiiDetector } from "@obexai/detection";
 
 const detector = new PiiDetector({ sensitivity: "medium" });
 const result = detector.scan("Contact john@example.com or call 020 7946 0958");
@@ -62,7 +62,7 @@ const detector = new PiiDetector({
 ## Custom Patterns
 
 ```ts
-import { registerPatterns } from "@obex/detection";
+import { registerPatterns } from "@obexai/detection";
 
 registerPatterns([{
   type: "email",
