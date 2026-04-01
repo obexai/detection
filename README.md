@@ -1,6 +1,6 @@
 # @obexai/detection
 
-PII detection engine for JavaScript/TypeScript. 26 regex patterns with validators, configurable sensitivity, and sub-5ms latency.
+PII detection engine for JavaScript/TypeScript. 26 regex patterns with validators plus NER-based entity detection, configurable sensitivity, and sub-5ms latency.
 
 ## Install
 
@@ -40,6 +40,18 @@ console.log(result.latencyMs); // ~2ms
 | **Location** | UK postcode | 1 | — |
 | **Temporal** | Date of birth (DD/MM/YYYY, ISO, US format) | 3 | — |
 | **Secrets** | AWS keys, generic API keys, Bearer tokens, JWT, Slack/GitHub/Stripe tokens | 8 | — |
+
+## NER Detection
+
+In addition to regex patterns, the detector runs a second pass using [compromise.js](https://github.com/spencermountain/compromise) to detect named entities:
+
+| Entity Type | Confidence |
+|-------------|------------|
+| `person_name` | 0.7 |
+| `organization` | 0.6 |
+| `location` | 0.65 |
+
+NER matches are included alongside regex matches in the `entities` array. The `source` field on each `PiiEntity` indicates whether a match came from `"regex"` or `"ner"`.
 
 ## Configuration
 

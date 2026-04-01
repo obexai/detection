@@ -226,6 +226,73 @@ describe("jwt", () => {
   });
 });
 
+// ── Debit Card ────────────────────────────────────────────────
+
+describe("debit_card", () => {
+  it("detects valid Maestro debit card numbers", () => {
+    // 6759 6498 2643 8453 passes Luhn
+    const r = detector.scan("Debit card: 6759 6498 2643 8453");
+    expect(r.entities.some((e) => e.type === "debit_card")).toBe(true);
+  });
+
+  it("rejects debit cards that fail Luhn validation", () => {
+    const r = detector.scan("Card: 6759 0000 0000 0001");
+    expect(r.entities.filter((e) => e.type === "debit_card")).toHaveLength(0);
+  });
+});
+
+// ── Sort Code ─────────────────────────────────────────────────
+
+describe("sort_code", () => {
+  it("detects valid sort codes", () => {
+    const r = detector.scan("Sort code: 12-34-56");
+    expect(r.entities.some((e) => e.type === "sort_code")).toBe(true);
+  });
+
+  it("rejects values starting with 19 (date-like)", () => {
+    const r = detector.scan("Date: 19-03-25");
+    expect(r.entities.filter((e) => e.type === "sort_code")).toHaveLength(0);
+  });
+
+  it("rejects values starting with 20 (date-like)", () => {
+    const r = detector.scan("Date: 20-03-25");
+    expect(r.entities.filter((e) => e.type === "sort_code")).toHaveLength(0);
+  });
+});
+
+// ── UTR ───────────────────────────────────────────────────────
+
+describe("utr", () => {
+  it("detects 10-digit UTR numbers", () => {
+    const r = sensitiveDetector.scan("UTR: 12345 67890");
+    expect(r.entities.some((e) => e.type === "utr")).toBe(true);
+  });
+
+  it("detects UTR numbers without space", () => {
+    // UTR regex matches \d{5}\s?\d{5} — contiguous digits are matched
+    const r = sensitiveDetector.scan("My UTR is 12345 67891");
+    expect(r.entities.some((e) => e.type === "utr")).toBe(true);
+  });
+});
+
+// ── Passport ──────────────────────────────────────────────────
+
+describe("passport", () => {
+  it("detects 9-digit UK passport numbers", () => {
+    const r = sensitiveDetector.scan("Passport: 123456789");
+    expect(r.entities.some((e) => e.type === "passport")).toBe(true);
+  });
+});
+
+// ── IPv6 ──────────────────────────────────────────────────────
+
+describe("ipv6", () => {
+  it("detects full IPv6 addresses", () => {
+    const r = detector.scan("Server: 2001:0db8:85a3:0000:0000:8a2e:0370:7334");
+    expect(r.entities.some((e) => e.type === "ip_address")).toBe(true);
+  });
+});
+
 // ── Redaction ──────────────────────────────────────────────────
 
 describe("redaction", () => {

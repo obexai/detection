@@ -18,7 +18,6 @@ export type PiiEntityType =
   | "jwt"
   | "person_name"
   | "organization"
-  | "address"
   | "location";
 
 /** A single detected PII entity */
