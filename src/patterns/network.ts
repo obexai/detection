@@ -5,7 +5,7 @@ export const networkPatterns: PiiPattern[] = [
   // IPv4 — validated range 0-255 per octet
   {
     type: "ip_address",
-    regex: /\b(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\b/g,
+    regex: /\b(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\b/gu,
     confidence: 0.8,
     validate: (value: string) => {
       // Exclude common non-PII IPs: localhost, broadcast, 0.0.0.0
@@ -18,7 +18,7 @@ export const networkPatterns: PiiPattern[] = [
   // IPv6 — full and compressed forms
   {
     type: "ip_address",
-    regex: /\b(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\b/g,
+    regex: /\b(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\b/gu,
     confidence: 0.75,
   },
 ];

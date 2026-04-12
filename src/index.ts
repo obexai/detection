@@ -18,6 +18,9 @@ const SENSITIVITY_THRESHOLDS: Record<Sensitivity, number> = {
   high: 0.3,
 };
 
+const DEFAULT_MAX_INPUT_BYTES = 102_400; // 100KB
+const DEFAULT_SCAN_WARN_MS = 100;
+
 export class PiiDetector {
   private config: Required<DetectorConfig>;
 
@@ -26,6 +29,8 @@ export class PiiDetector {
       sensitivity: config.sensitivity ?? "medium",
       entities: config.entities ?? [],
       exclude: config.exclude ?? [],
+      maxInputBytes: config.maxInputBytes ?? DEFAULT_MAX_INPUT_BYTES,
+      scanWarnMs: config.scanWarnMs ?? DEFAULT_SCAN_WARN_MS,
     };
   }
 
@@ -34,6 +39,14 @@ export class PiiDetector {
    * Returns all detected entities, redacted text, and a risk score.
    */
   scan(text: string): DetectionResult {
+    // Skip scan for oversized inputs
+    if (new TextEncoder().encode(text).byteLength > this.config.maxInputBytes) {
+      console.warn(
+        `Obex: Input exceeds ${this.config.maxInputBytes} bytes, skipping PII scan`,
+      );
+      return { entities: [], redacted: text, score: 0, latencyMs: 0 };
+    }
+
     const start = performance.now();
     const threshold = SENSITIVITY_THRESHOLDS[this.config.sensitivity];
     const entities: PiiEntity[] = [];
@@ -85,6 +98,12 @@ export class PiiDetector {
     const deduped = deduplicateEntities(entities);
 
     const latencyMs = performance.now() - start;
+
+    if (this.config.scanWarnMs > 0 && latencyMs > this.config.scanWarnMs) {
+      console.warn(
+        `Obex: PII scan took ${latencyMs.toFixed(1)}ms (>${this.config.scanWarnMs}ms threshold)`,
+      );
+    }
 
     return {
       entities: deduped,
