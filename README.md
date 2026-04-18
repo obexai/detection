@@ -1,17 +1,17 @@
-# @velare/detection
+# @drask-dev/detection
 
 PII detection engine for JavaScript/TypeScript. 26 regex patterns with validators plus NER-based entity detection, configurable sensitivity, and sub-5ms latency.
 
 ## Install
 
 ```bash
-npm install @velare/detection
+npm install @drask-dev/detection
 ```
 
 ## Quick Start
 
 ```ts
-import { PiiDetector } from "@velare/detection";
+import { PiiDetector } from "@drask-dev/detection";
 
 const detector = new PiiDetector({ sensitivity: "medium" });
 const result = detector.scan("Contact john@example.com or call 020 7946 0958");
@@ -74,7 +74,7 @@ const detector = new PiiDetector({
 ## Custom Patterns
 
 ```ts
-import { registerPatterns } from "@velare/detection";
+import { registerPatterns } from "@drask-dev/detection";
 
 registerPatterns([{
   type: "email",
