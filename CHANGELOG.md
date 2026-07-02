@@ -2,6 +2,11 @@
 
 All notable changes to `@drask-dev/scan` are documented here.
 
+## [0.7.1] — 2026-07-01
+
+### Changed
+- README copy cleanup (no functional changes).
+
 ## [0.7.0] — 2026-07-01
 
 ### Changed — BREAKING

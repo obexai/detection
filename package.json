@@ -1,6 +1,6 @@
 {
   "name": "@drask-dev/scan",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "PII detection engine — regex patterns and NER for structured and unstructured PII",
   "type": "module",
   "main": "./dist/index.cjs",
