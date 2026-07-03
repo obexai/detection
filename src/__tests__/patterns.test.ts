@@ -384,6 +384,13 @@ describe("ipv6", () => {
     const r = detector.scan("Loopback: ::1");
     expect(r.entities.filter((e) => e.type === "ip_address")).toHaveLength(0);
   });
+
+  it("detects the full address when groups follow the compression marker", () => {
+    const r = detector.scan("IPv6 client address 2001:db8::ff00:42:8329 connected.");
+    const ips = r.entities.filter((e) => e.type === "ip_address");
+    expect(ips).toHaveLength(1);
+    expect(ips[0].value).toBe("2001:db8::ff00:42:8329");
+  });
 });
 
 // ── Redaction ──────────────────────────────────────────────────
