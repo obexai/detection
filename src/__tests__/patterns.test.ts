@@ -49,6 +49,26 @@ describe("phone", () => {
     const r = detector.scan("Phone: 555-123-4567");
     expect(r.entities.some((e) => e.type === "phone")).toBe(true);
   });
+
+  it("detects UK numbers with a 2-digit international area code (London)", () => {
+    const r = detector.scan("You can reach the office at +44 20 7946 0958.");
+    expect(r.entities.some((e) => e.type === "phone" && e.value === "+44 20 7946 0958")).toBe(true);
+  });
+
+  it("does not misread a 16-digit order ID as a phone number", () => {
+    const r = detector.scan("Order ID 4111222233334444 shipped yesterday.");
+    expect(r.entities.filter((e) => e.type === "phone")).toHaveLength(0);
+  });
+
+  it("does not misread a bad-Luhn debit card reference as a phone number", () => {
+    const r = detector.scan("Reference 6759123456789019 does not match any transaction.");
+    expect(r.entities.filter((e) => e.type === "phone")).toHaveLength(0);
+  });
+
+  it("does not misread an invalid IBAN as a phone number", () => {
+    const r = detector.scan("Batch code GB99ABCD12345678901234 failed validation.");
+    expect(r.entities.filter((e) => e.type === "phone")).toHaveLength(0);
+  });
 });
 
 // ── Credit Card ────────────────────────────────────────────────
@@ -180,6 +200,26 @@ describe("date_of_birth", () => {
   it("detects ISO dates", () => {
     const r = sensitiveDetector.scan("Born: 1990-03-15");
     expect(r.entities.some((e) => e.type === "date_of_birth")).toBe(true);
+  });
+
+  it("detects unambiguous US-format dates (day > 12) at medium sensitivity", () => {
+    const r = detector.scan("Born 03/14/1991 per the US visa application.");
+    expect(r.entities.some((e) => e.type === "date_of_birth" && e.value === "03/14/1991")).toBe(true);
+  });
+
+  it("does not double-detect ambiguous US-format dates via the low-confidence entry (day <= 12) at medium sensitivity", () => {
+    const r = detector.scan("Born 03/04/1991 per the US visa application.");
+    // "03/04/1991" (day=03, month=04) is also a valid DD/MM date, so it's
+    // legitimately matched once via the pre-existing DD/MM pattern (confidence
+    // 0.5, unrelated to this fix). This asserts the low-confidence ambiguous
+    // US-format entry (0.45) does NOT also fire, which would produce a
+    // duplicate — not that the string goes undetected entirely.
+    expect(r.entities.filter((e) => e.type === "date_of_birth")).toHaveLength(1);
+  });
+
+  it("still detects ambiguous US-format dates (day <= 12) at high sensitivity", () => {
+    const r = sensitiveDetector.scan("Born 03/04/1991 per the US visa application.");
+    expect(r.entities.some((e) => e.type === "date_of_birth" && e.value === "03/04/1991")).toBe(true);
   });
 });
 
@@ -363,6 +403,13 @@ describe("ipv6", () => {
   it("excludes IPv6 loopback (::1)", () => {
     const r = detector.scan("Loopback: ::1");
     expect(r.entities.filter((e) => e.type === "ip_address")).toHaveLength(0);
+  });
+
+  it("detects the full address when groups follow the compression marker", () => {
+    const r = detector.scan("IPv6 client address 2001:db8::ff00:42:8329 connected.");
+    const ips = r.entities.filter((e) => e.type === "ip_address");
+    expect(ips).toHaveLength(1);
+    expect(ips[0].value).toBe("2001:db8::ff00:42:8329");
   });
 });
 

@@ -1,0 +1,642 @@
+{
+  "generatedAt": "2026-07-03T08:35:37.189Z",
+  "corpusSize": 66,
+  "bySensitivity": [
+    {
+      "sensitivity": "medium",
+      "corpusSize": 66,
+      "overall": {
+        "tp": 61,
+        "fp": 6,
+        "fn": 7,
+        "precision": 0.91,
+        "recall": 0.897,
+        "f1": 0.904
+      },
+      "perType": {
+        "api_key": {
+          "tp": 5,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "aws_key": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 1,
+          "precision": 1,
+          "recall": 0.75,
+          "f1": 0.857
+        },
+        "credit_card": {
+          "tp": 5,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "date_of_birth": {
+          "tp": 4,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0.8,
+          "recall": 1,
+          "f1": 0.889
+        },
+        "debit_card": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "email": {
+          "tp": 4,
+          "fp": 1,
+          "fn": 1,
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8
+        },
+        "iban": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "ip_address": {
+          "tp": 4,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0.8,
+          "recall": 1,
+          "f1": 0.889
+        },
+        "jwt": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "location": {
+          "tp": 7,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "national_insurance": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "nhs_number": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "organization": {
+          "tp": 5,
+          "fp": 1,
+          "fn": 2,
+          "precision": 0.833,
+          "recall": 0.714,
+          "f1": 0.769
+        },
+        "passport": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "precision": 1,
+          "recall": 0,
+          "f1": 0
+        },
+        "person_name": {
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "phone": {
+          "tp": 4,
+          "fp": 2,
+          "fn": 0,
+          "precision": 0.667,
+          "recall": 1,
+          "f1": 0.8
+        },
+        "sort_code": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "precision": 1,
+          "recall": 0,
+          "f1": 0
+        },
+        "uk_postcode": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "utr": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "precision": 1,
+          "recall": 0,
+          "f1": 0
+        }
+      },
+      "latency": {
+        "meanMs": 1.4315181818181917,
+        "p50Ms": 1.0533000000000357,
+        "p95Ms": 3.489599999999996,
+        "p99Ms": 6.235400000000027,
+        "maxMs": 6.235400000000027
+      },
+      "diffs": [
+        {
+          "id": "email-4-fp-probe",
+          "category": "email",
+          "missing": [],
+          "extra": [
+            {
+              "type": "email",
+              "value": "report@2x.png"
+            }
+          ]
+        },
+        {
+          "id": "email-5-fn-probe",
+          "category": "email",
+          "missing": [
+            {
+              "type": "email",
+              "value": "j.smith[at]example[dot]com"
+            }
+          ],
+          "extra": []
+        },
+        {
+          "id": "phone-4-fp-probe",
+          "category": "phone",
+          "missing": [],
+          "extra": [
+            {
+              "type": "phone",
+              "value": "020-794-6095"
+            }
+          ]
+        },
+        {
+          "id": "nhs-3-fp-probe-bad-checkdigit",
+          "category": "nhs_number",
+          "missing": [],
+          "extra": [
+            {
+              "type": "phone",
+              "value": "400 123 4569"
+            }
+          ]
+        },
+        {
+          "id": "sortcode-1",
+          "category": "sort_code",
+          "missing": [
+            {
+              "type": "sort_code",
+              "value": "20-45-67"
+            }
+          ],
+          "extra": []
+        },
+        {
+          "id": "utr-1",
+          "category": "utr",
+          "missing": [
+            {
+              "type": "utr",
+              "value": "12345 67890"
+            }
+          ],
+          "extra": []
+        },
+        {
+          "id": "passport-1",
+          "category": "passport",
+          "missing": [
+            {
+              "type": "passport",
+              "value": "123456789"
+            }
+          ],
+          "extra": []
+        },
+        {
+          "id": "ip-4-fp-probe-semver",
+          "category": "ip_address",
+          "missing": [],
+          "extra": [
+            {
+              "type": "ip_address",
+              "value": "1.2.3.4"
+            }
+          ]
+        },
+        {
+          "id": "dob-3-us-format",
+          "category": "date_of_birth",
+          "missing": [],
+          "extra": [
+            {
+              "type": "organization",
+              "value": "visa"
+            }
+          ]
+        },
+        {
+          "id": "dob-4-fp-probe-meeting-date",
+          "category": "date_of_birth",
+          "missing": [],
+          "extra": [
+            {
+              "type": "date_of_birth",
+              "value": "30/06/2027"
+            }
+          ]
+        },
+        {
+          "id": "secret-3-aws-secret-fn-probe",
+          "category": "aws_key",
+          "missing": [
+            {
+              "type": "aws_key",
+              "value": "wJalrXUtnFEMIK7MDENGbPxRfiCYEXAMPLEKEYVAL"
+            }
+          ],
+          "extra": []
+        },
+        {
+          "id": "ner-2-name-org-location",
+          "category": "person_name",
+          "missing": [
+            {
+              "type": "organization",
+              "value": "Barclays"
+            }
+          ],
+          "extra": []
+        },
+        {
+          "id": "ner-3-org",
+          "category": "organization",
+          "missing": [
+            {
+              "type": "organization",
+              "value": "Stripe"
+            }
+          ],
+          "extra": []
+        }
+      ]
+    },
+    {
+      "sensitivity": "high",
+      "corpusSize": 66,
+      "overall": {
+        "tp": 64,
+        "fp": 9,
+        "fn": 4,
+        "precision": 0.877,
+        "recall": 0.941,
+        "f1": 0.908
+      },
+      "perType": {
+        "api_key": {
+          "tp": 5,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "aws_key": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 1,
+          "precision": 1,
+          "recall": 0.75,
+          "f1": 0.857
+        },
+        "credit_card": {
+          "tp": 5,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "date_of_birth": {
+          "tp": 4,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0.8,
+          "recall": 1,
+          "f1": 0.889
+        },
+        "debit_card": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "email": {
+          "tp": 4,
+          "fp": 1,
+          "fn": 1,
+          "precision": 0.8,
+          "recall": 0.8,
+          "f1": 0.8
+        },
+        "iban": {
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "ip_address": {
+          "tp": 4,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0.8,
+          "recall": 1,
+          "f1": 0.889
+        },
+        "jwt": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "location": {
+          "tp": 7,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "national_insurance": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "nhs_number": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "organization": {
+          "tp": 5,
+          "fp": 1,
+          "fn": 2,
+          "precision": 0.833,
+          "recall": 0.714,
+          "f1": 0.769
+        },
+        "passport": {
+          "tp": 1,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0.5,
+          "recall": 1,
+          "f1": 0.667
+        },
+        "person_name": {
+          "tp": 6,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "phone": {
+          "tp": 4,
+          "fp": 2,
+          "fn": 0,
+          "precision": 0.667,
+          "recall": 1,
+          "f1": 0.8
+        },
+        "sort_code": {
+          "tp": 1,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0.5,
+          "recall": 1,
+          "f1": 0.667
+        },
+        "uk_postcode": {
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1
+        },
+        "utr": {
+          "tp": 1,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0.5,
+          "recall": 1,
+          "f1": 0.667
+        }
+      },
+      "latency": {
+        "meanMs": 0.7981863636363669,
+        "p50Ms": 0.6301999999999452,
+        "p95Ms": 1.5896999999999935,
+        "p99Ms": 4.61710000000005,
+        "maxMs": 4.61710000000005
+      },
+      "diffs": [
+        {
+          "id": "email-4-fp-probe",
+          "category": "email",
+          "missing": [],
+          "extra": [
+            {
+              "type": "email",
+              "value": "report@2x.png"
+            }
+          ]
+        },
+        {
+          "id": "email-5-fn-probe",
+          "category": "email",
+          "missing": [
+            {
+              "type": "email",
+              "value": "j.smith[at]example[dot]com"
+            }
+          ],
+          "extra": []
+        },
+        {
+          "id": "phone-4-fp-probe",
+          "category": "phone",
+          "missing": [],
+          "extra": [
+            {
+              "type": "phone",
+              "value": "020-794-6095"
+            }
+          ]
+        },
+        {
+          "id": "nhs-3-fp-probe-bad-checkdigit",
+          "category": "nhs_number",
+          "missing": [],
+          "extra": [
+            {
+              "type": "phone",
+              "value": "400 123 4569"
+            }
+          ]
+        },
+        {
+          "id": "sortcode-2-fp-probe-date",
+          "category": "sort_code",
+          "missing": [],
+          "extra": [
+            {
+              "type": "sort_code",
+              "value": "12-03-24"
+            }
+          ]
+        },
+        {
+          "id": "utr-2-fp-probe-invoice",
+          "category": "utr",
+          "missing": [],
+          "extra": [
+            {
+              "type": "utr",
+              "value": "55512 34567"
+            }
+          ]
+        },
+        {
+          "id": "passport-2-fp-probe-tracking",
+          "category": "passport",
+          "missing": [],
+          "extra": [
+            {
+              "type": "passport",
+              "value": "987654321"
+            }
+          ]
+        },
+        {
+          "id": "ip-4-fp-probe-semver",
+          "category": "ip_address",
+          "missing": [],
+          "extra": [
+            {
+              "type": "ip_address",
+              "value": "1.2.3.4"
+            }
+          ]
+        },
+        {
+          "id": "dob-3-us-format",
+          "category": "date_of_birth",
+          "missing": [],
+          "extra": [
+            {
+              "type": "organization",
+              "value": "visa"
+            }
+          ]
+        },
+        {
+          "id": "dob-4-fp-probe-meeting-date",
+          "category": "date_of_birth",
+          "missing": [],
+          "extra": [
+            {
+              "type": "date_of_birth",
+              "value": "30/06/2027"
+            }
+          ]
+        },
+        {
+          "id": "secret-3-aws-secret-fn-probe",
+          "category": "aws_key",
+          "missing": [
+            {
+              "type": "aws_key",
+              "value": "wJalrXUtnFEMIK7MDENGbPxRfiCYEXAMPLEKEYVAL"
+            }
+          ],
+          "extra": []
+        },
+        {
+          "id": "ner-2-name-org-location",
+          "category": "person_name",
+          "missing": [
+            {
+              "type": "organization",
+              "value": "Barclays"
+            }
+          ],
+          "extra": []
+        },
+        {
+          "id": "ner-3-org",
+          "category": "organization",
+          "missing": [
+            {
+              "type": "organization",
+              "value": "Stripe"
+            }
+          ],
+          "extra": []
+        }
+      ]
+    }
+  ]
+}

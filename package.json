@@ -1,6 +1,6 @@
 {
   "name": "@drask-dev/scan",
-  "version": "0.7.0",
+  "version": "0.7.2",
   "description": "PII detection engine — regex patterns and NER for structured and unstructured PII",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -22,6 +22,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "vitest run",
+    "eval": "tsx eval/run.ts",
     "lint": "eslint src/",
     "prepublishOnly": "pnpm run build && pnpm run test"
   },
@@ -56,6 +57,7 @@
   "devDependencies": {
     "eslint": "^9.0.0",
     "tsup": "^8.4.0",
+    "tsx": "^4.22.5",
     "typescript": "^5.7.0",
     "typescript-eslint": "^8.0.0",
     "vitest": "^3.0.0"
