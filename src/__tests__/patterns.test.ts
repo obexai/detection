@@ -49,6 +49,26 @@ describe("phone", () => {
     const r = detector.scan("Phone: 555-123-4567");
     expect(r.entities.some((e) => e.type === "phone")).toBe(true);
   });
+
+  it("detects UK numbers with a 2-digit international area code (London)", () => {
+    const r = detector.scan("You can reach the office at +44 20 7946 0958.");
+    expect(r.entities.some((e) => e.type === "phone" && e.value === "+44 20 7946 0958")).toBe(true);
+  });
+
+  it("does not misread a 16-digit order ID as a phone number", () => {
+    const r = detector.scan("Order ID 4111222233334444 shipped yesterday.");
+    expect(r.entities.filter((e) => e.type === "phone")).toHaveLength(0);
+  });
+
+  it("does not misread a bad-Luhn debit card reference as a phone number", () => {
+    const r = detector.scan("Reference 6759123456789019 does not match any transaction.");
+    expect(r.entities.filter((e) => e.type === "phone")).toHaveLength(0);
+  });
+
+  it("does not misread an invalid IBAN as a phone number", () => {
+    const r = detector.scan("Batch code GB99ABCD12345678901234 failed validation.");
+    expect(r.entities.filter((e) => e.type === "phone")).toHaveLength(0);
+  });
 });
 
 // ── Credit Card ────────────────────────────────────────────────

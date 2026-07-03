@@ -12,14 +12,14 @@ export const contactPatterns: PiiPattern[] = [
   // UK phone: +44, 07xxx, 01xxx, 02xxx formats
   {
     type: "phone",
-    regex: /(?:\+44\s?|0)(?:7\d{3}|\d{3,4})[\s.-]?\d{3}[\s.-]?\d{3,4}\b/gu,
+    regex: /(?<!\d)(?:\+44\s?|0)(?:7\d{3}|\d{2,4})[\s.-]?\d{3,4}[\s.-]?\d{3,4}\b/gu,
     confidence: 0.8,
   },
 
   // US phone: (555) 123-4567, 555-123-4567, +1 555 123 4567
   {
     type: "phone",
-    regex: /(?:\+1[\s.-]?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}\b/gu,
+    regex: /(?<!\d)(?:\+1[\s.-]?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}\b/gu,
     confidence: 0.7,
   },
 
