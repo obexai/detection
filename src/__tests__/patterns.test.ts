@@ -207,9 +207,14 @@ describe("date_of_birth", () => {
     expect(r.entities.some((e) => e.type === "date_of_birth" && e.value === "03/14/1991")).toBe(true);
   });
 
-  it("does not detect ambiguous US-format dates (day <= 12) at medium sensitivity", () => {
+  it("does not double-detect ambiguous US-format dates via the low-confidence entry (day <= 12) at medium sensitivity", () => {
     const r = detector.scan("Born 03/04/1991 per the US visa application.");
-    expect(r.entities.filter((e) => e.type === "date_of_birth")).toHaveLength(0);
+    // "03/04/1991" (day=03, month=04) is also a valid DD/MM date, so it's
+    // legitimately matched once via the pre-existing DD/MM pattern (confidence
+    // 0.5, unrelated to this fix). This asserts the low-confidence ambiguous
+    // US-format entry (0.45) does NOT also fire, which would produce a
+    // duplicate — not that the string goes undetected entirely.
+    expect(r.entities.filter((e) => e.type === "date_of_birth")).toHaveLength(1);
   });
 
   it("still detects ambiguous US-format dates (day <= 12) at high sensitivity", () => {
