@@ -52,19 +52,25 @@ pnpm eval -- --diff  # also print every mismatched case (authoring aid)
 Kept in the corpus deliberately because they're real and worth knowing
 about, not artifacts of test authoring:
 
-- **US phone pattern lacks a leading word boundary.** It can match a
-  10-digit substring embedded inside a longer digit run — a failed card
-  number, an IBAN, an order ID — and misreport it as a phone number
-  (`cc-6-fp-probe-order-id`, `dc-3-fp-probe-bad-luhn`, `iban-3-fp-probe`,
-  `nhs-3-fp-probe-bad-checkdigit`). This is the single largest precision
-  drag in the results.
-- **`+44` numbers with 2-digit area codes (e.g. London's 020) are missed**
-  (`phone-2`). The UK phone regex requires 3–4 digits for the area-code
-  group; written in international format the leading 0 is dropped,
-  shortening London numbers below that minimum.
-- **The IPv6 pattern doesn't cover every RFC 4291 compressed form.** A
-  valid compressed address can both under-match (truncate early) and
-  register a spurious partial match in the same scan (`ip-2-v6`).
+- **Phone numbers with no distinguishing context are still indistinguishable
+  from same-shaped non-phone numbers.** A spaced 3-3-4 digit grouping
+  (`nhs-3-fp-probe-bad-checkdigit`, e.g. an order quantity code) and a
+  hyphenated UK-shaped reference number (`phone-4-fp-probe`) both still
+  match — this is the same class of irreducible shape-ambiguity as
+  `sort_code`/`utr`/`passport` below, not a bug. (Fixed in v0.7.2: the
+  phone regex no longer leaks into unrelated structured-PII types with no
+  shape ambiguity at all — credit card, debit card, IBAN — and UK numbers
+  with a 2-digit international area code, e.g. London's `+44 20 ...`, are
+  now matched.)
+- **A semver-shaped string is numerically indistinguishable from an IPv4
+  address** (`ip-4-fp-probe-semver`, e.g. `1.2.3.4`) — genuine ambiguity
+  the engine cannot resolve without context. (Fixed in v0.7.2: the IPv6
+  pattern no longer truncates at the `::` compression marker when more
+  hex groups follow, e.g. `2001:db8::ff00:42:8329`.)
+- **A context-free date string cannot be distinguished from an actual date
+  of birth** (`dob-4-fp-probe-meeting-date`) — any `DD/MM/YYYY`-shaped
+  string matches regardless of surrounding meaning, same class as the
+  phone/IP findings above.
 - **`sort_code` / `utr` / `passport` have no checksum**, so at `high`
   sensitivity they will match plausible non-PII numbers in the same shape
   (a meeting-time-shaped sort code, an invoice-shaped UTR, a

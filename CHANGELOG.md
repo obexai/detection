@@ -2,6 +2,20 @@
 
 All notable changes to `@drask-dev/scan` are documented here.
 
+## [0.7.2] — 2026-07-03
+
+### Fixed
+- **Phone false positives from unrelated structured PII** — `src/patterns/contact.ts`'s UK and US phone regexes now anchor with `(?<!\d)` so they can no longer match a substring inside a longer, unrelated digit run (a bad-Luhn card/debit reference, an invalid IBAN, an order ID).
+- **UK phone false negatives on 2-digit international area codes** — the UK regex's area-code group now accepts 2-4 digits (was 3-4), catching numbers like London's `+44 20 7946 0958`.
+- **IPv6 compressed-address truncation** — `src/patterns/network.ts`'s IPv6 regex no longer stops at the `::` marker when more hex groups follow (e.g. `2001:db8::ff00:42:8329` previously matched only `2001:db8::`).
+- **US-format date-of-birth false negatives** — `src/patterns/temporal.ts` now fires at `medium` sensitivity for US-format dates where the day value (13-31) makes the date unambiguous (cannot also parse as `DD/MM/YYYY`); genuinely ambiguous day values (01-12) remain high-sensitivity-only.
+
+### Eval harness impact (`eval/`, `medium` sensitivity)
+- `phone`: precision 37.5% -> 66.7%, recall 75% -> 100%
+- `ip_address`: precision 60% -> 80%, recall 75% -> 100%
+- `date_of_birth`: precision 75% -> 80%, recall 75% -> 100%
+- Overall: precision 85.3% -> 91.0%, recall 85.3% -> 89.7%, F1 85.3% -> 90.4%
+
 ## [0.7.1] — 2026-07-01
 
 ### Changed
