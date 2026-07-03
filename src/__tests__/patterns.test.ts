@@ -201,6 +201,21 @@ describe("date_of_birth", () => {
     const r = sensitiveDetector.scan("Born: 1990-03-15");
     expect(r.entities.some((e) => e.type === "date_of_birth")).toBe(true);
   });
+
+  it("detects unambiguous US-format dates (day > 12) at medium sensitivity", () => {
+    const r = detector.scan("Born 03/14/1991 per the US visa application.");
+    expect(r.entities.some((e) => e.type === "date_of_birth" && e.value === "03/14/1991")).toBe(true);
+  });
+
+  it("does not detect ambiguous US-format dates (day <= 12) at medium sensitivity", () => {
+    const r = detector.scan("Born 03/04/1991 per the US visa application.");
+    expect(r.entities.filter((e) => e.type === "date_of_birth")).toHaveLength(0);
+  });
+
+  it("still detects ambiguous US-format dates (day <= 12) at high sensitivity", () => {
+    const r = sensitiveDetector.scan("Born 03/04/1991 per the US visa application.");
+    expect(r.entities.some((e) => e.type === "date_of_birth" && e.value === "03/04/1991")).toBe(true);
+  });
 });
 
 // ── AWS Keys ───────────────────────────────────────────────────
